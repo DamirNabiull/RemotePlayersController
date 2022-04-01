@@ -1,0 +1,14 @@
+C:\Users\Dale\Documents\Appollo2022\PlayersController\bin\Debug\PlayersDatabase.mdf
+C:\Users\Dale\Documents\Appollo2022\PlayersController\bin\Debug\PlayersDatabase_log.ldf
+C:\Users\Dale\Documents\Appollo2022\PlayersController\bin\Debug\PlayersController.exe.config
+C:\Users\Dale\Documents\Appollo2022\PlayersController\bin\Debug\PlayersController.exe
+C:\Users\Dale\Documents\Appollo2022\PlayersController\bin\Debug\PlayersController.pdb
+C:\Users\Dale\Documents\Appollo2022\PlayersController\obj\Debug\PlayersController.csproj.AssemblyReference.cache
+C:\Users\Dale\Documents\Appollo2022\PlayersController\obj\Debug\PlayersController.csproj.SuggestedBindingRedirects.cache
+C:\Users\Dale\Documents\Appollo2022\PlayersController\obj\Debug\PlayersController.Form1.resources
+C:\Users\Dale\Documents\Appollo2022\PlayersController\obj\Debug\PlayersController.Properties.Resources.resources
+C:\Users\Dale\Documents\Appollo2022\PlayersController\obj\Debug\PlayersController.csproj.GenerateResource.cache
+C:\Users\Dale\Documents\Appollo2022\PlayersController\obj\Debug\PlayersController.csproj.CoreCompileInputs.cache
+C:\Users\Dale\Documents\Appollo2022\PlayersController\obj\Debug\PlayersController.exe
+C:\Users\Dale\Documents\Appollo2022\PlayersController\obj\Debug\PlayersController.pdb
+C:\Users\Dale\Documents\Appollo2022\PlayersController\obj\Debug\PlayersController.PlayerControl.resources
