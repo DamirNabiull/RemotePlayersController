@@ -34,7 +34,7 @@ namespace PlayersController
             _sqlConnection = new SqlConnection($@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename={path}\PlayersDatabase.mdf;Integrated Security=True");
             _sqlConnection.Open();
 
-            _sqlDataAdapter = new SqlDataAdapter("select Id, Name, IP, Port, MAC from Players", _sqlConnection);
+            _sqlDataAdapter = new SqlDataAdapter("select Name, IP, Port, MAC from Players", _sqlConnection);
 
             _dataTable = new DataTable();
 
@@ -46,10 +46,9 @@ namespace PlayersController
 
         private void button1_Click(object sender, EventArgs e)
         {
-            _dataTable.Clear();
             String name = textBox1.Text, ip = textBox2.Text, port = textBox3.Text, MAC = textBox4.Text;
 
-            if (_checker.check_ip(ip) && _checker.check_port(port))
+            if (_checker.check_Ip(ip) && _checker.check_Port(port) && _checker.check_Name(name))
             {
                 try
                 {
@@ -63,6 +62,8 @@ namespace PlayersController
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
+                        _dataTable.Clear();
+
                         var sqlCmd = new SqlCommand("addPlayer", _sqlConnection);
                         sqlCmd.CommandType = CommandType.StoredProcedure;
                         sqlCmd.Parameters.AddWithValue("@Name", name);
@@ -92,7 +93,7 @@ namespace PlayersController
             } 
             else
             {
-                MessageBox.Show("Некорректный ip или port");
+                MessageBox.Show("Некорректный ip, port или пустое имя");
             }
         }
 
@@ -102,11 +103,11 @@ namespace PlayersController
 
             Player player = new Player();
 
-            player.Id = Int32.Parse(((DataGridViewTextBoxCell)dataGridView1.Rows[e.RowIndex].Cells[0]).Value.ToString());
-            player.Name = ((DataGridViewTextBoxCell)dataGridView1.Rows[e.RowIndex].Cells[1]).Value.ToString();
-            player.IP = ((DataGridViewTextBoxCell)dataGridView1.Rows[e.RowIndex].Cells[2]).Value.ToString();
-            player.Port = ((DataGridViewTextBoxCell)dataGridView1.Rows[e.RowIndex].Cells[3]).Value.ToString();
-            player.MAC = ((DataGridViewTextBoxCell)dataGridView1.Rows[e.RowIndex].Cells[4]).Value.ToString();
+
+            player.Name = ((DataGridViewTextBoxCell)dataGridView1.Rows[e.RowIndex].Cells[0]).Value.ToString();
+            player.IP = ((DataGridViewTextBoxCell)dataGridView1.Rows[e.RowIndex].Cells[1]).Value.ToString();
+            player.Port = ((DataGridViewTextBoxCell)dataGridView1.Rows[e.RowIndex].Cells[2]).Value.ToString();
+            player.MAC = ((DataGridViewTextBoxCell)dataGridView1.Rows[e.RowIndex].Cells[3]).Value.ToString();
 
             Trace.WriteLine(cell.Value);
 

@@ -23,16 +23,22 @@ namespace PlayersController
 
         }
 
-        public bool check_ip(string ip)
+        public bool check_Ip(string ip)
         {
             Regex rgx = new Regex(@"^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$");
             return rgx.IsMatch(ip);
         }
 
-        public bool check_port(string port)
+        public bool check_Port(string port)
         {
             Regex rgx = new Regex(@"^([1-9][0-9][0-9][0-9]|[1-3][0-9][0-9][0-9][0-9])$");
             return rgx.IsMatch(port);
+        }
+
+        public bool check_Name(string name)
+        {
+            string new_name = Regex.Replace(name, @"\s+", "");
+            return new_name.Length > 0;
         }
     }
 }

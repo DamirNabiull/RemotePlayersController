@@ -37,104 +37,22 @@ namespace PlayersController
             this.textBox4.Text = _player.MAC;
         }
 
-        private async void button2_Click(object sender, EventArgs e)
+        private void button2_Click(object sender, EventArgs e)
         {
-            try
-            {
-                request = (HttpWebRequest)WebRequest.Create($@"http://{_player.IP}:{_player.Port}/setURL");
-                request.Method = "GET";
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-
-                Trace.WriteLine(response.StatusCode);
-
-                Trace.WriteLine(response.StatusCode == HttpStatusCode.OK);
-
-                if (response.StatusCode == HttpStatusCode.OK)
-                {
-                    MessageBox.Show("Процесс запущен");
-                }
-                else
-                {
-                    MessageBox.Show("Ошибка соединения с плеером");
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Нет соединения с плеером");
-                Trace.WriteLine(ex.ToString());
-            }
-            finally
-            {
-                request?.Abort();
-            }
+            SendGetRequest("setURL");
         }
 
-        private async void button3_Click(object sender, EventArgs e)
+        private void button3_Click(object sender, EventArgs e)
         {
-            request = (HttpWebRequest)WebRequest.Create($@"http://{_player.IP}:{_player.Port}/setImage");
-            try
-            {
-                
-                request.Method = "GET";
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-
-                Trace.WriteLine(response.StatusCode);
-
-                Trace.WriteLine(response.StatusCode == HttpStatusCode.OK);
-
-                if (response.StatusCode == HttpStatusCode.OK)
-                {
-                    MessageBox.Show("Процесс запущен");
-                }
-                else
-                {
-                    MessageBox.Show("Ошибка соединения с плеером");
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Нет соединения с плеером");
-                Trace.WriteLine(ex.ToString());
-            }
-            finally
-            {
-                request?.Abort();
-            }
+            SendGetRequest("setImage");
         }
 
-        private async void button4_Click(object sender, EventArgs e)
+        private void button4_Click(object sender, EventArgs e)
         {
-            request = (HttpWebRequest)WebRequest.Create($@"http://{_player.IP}:{_player.Port}/setVideo");
-            request.Method = "GET";
-            try
-            {
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-
-                Trace.WriteLine(response.StatusCode);
-
-                Trace.WriteLine(response.StatusCode == HttpStatusCode.OK);
-
-                if (response.StatusCode == HttpStatusCode.OK)
-                {
-                    MessageBox.Show("Процесс запущен");
-                }
-                else
-                {
-                    MessageBox.Show("Ошибка соединения с плеером");
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Нет соединения с плеером");
-                Trace.WriteLine(ex.ToString());
-            }
-            finally
-            {
-                request?.Abort();
-            }
+            SendGetRequest("setVideo");
         }
 
-        private async void button5_Click(object sender, EventArgs e)
+        private void button5_Click(object sender, EventArgs e)
         {
             if (this.textBox5.Text.Length > 0)
             {
@@ -176,6 +94,39 @@ namespace PlayersController
             }
         }
 
+        private bool SendGetRequest(string route)
+        {
+            bool status = false;
+            request = (HttpWebRequest)WebRequest.Create($@"http://{_player.IP}:{_player.Port}/{route}");
+            request.Method = "GET";
+            try
+            {
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
+                Trace.WriteLine(response.StatusCode);
+
+                Trace.WriteLine(response.StatusCode == HttpStatusCode.OK);
+
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    MessageBox.Show("Процесс запущен");
+                    status = true;
+                }
+                else
+                {
+                    MessageBox.Show("Ошибка соединения с плеером");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Нет соединения с плеером");
+                Trace.WriteLine(ex.ToString());
+            }
+            finally
+            {
+                request?.Abort();
+            }
+            return status;
+        }
     }
 }
