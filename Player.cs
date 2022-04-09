@@ -46,5 +46,11 @@ namespace PlayersController
             string new_name = Regex.Replace(name, @"\s+", "");
             return new_name.Length > 0;
         }
+
+        public bool check_time(string time)
+        {
+            Regex rgx = new Regex(@"^([0-1][0-9]|[2][0-3])$");
+            return rgx.IsMatch(time);
+        }
     }
 }

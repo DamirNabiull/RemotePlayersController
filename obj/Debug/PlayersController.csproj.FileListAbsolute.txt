@@ -12,3 +12,4 @@ C:\Users\Dale\Documents\Appollo2022\PlayersController\obj\Debug\PlayersControlle
 C:\Users\Dale\Documents\Appollo2022\PlayersController\bin\Debug\System.Data.SqlServerCe.dll
 C:\Users\Dale\Documents\Appollo2022\PlayersController\obj\Debug\PlayersController.csproj.CopyComplete
 C:\Users\Dale\Documents\Appollo2022\PlayersController\obj\Debug\PlayersController.Menu.resources
+C:\Users\Dale\Documents\Appollo2022\PlayersController\obj\Debug\PlayersController.TimerControl.resources

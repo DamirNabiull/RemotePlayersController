@@ -29,8 +29,13 @@ namespace PlayersController
         private Checker _checker;
         private HttpWebRequest request = null;
 
+        TimerControl timerControl;
+        Player player;
+
         public Menu()
         {
+            timerControl = new TimerControl();
+            player = new Player();
             _checker = new Checker();
             InitializeComponent();
         }
@@ -47,11 +52,10 @@ namespace PlayersController
 
                 _cmd = new SqlCeCommand(@"create table Players
                     (
-                    [Id]   INT           IDENTITY (1, 1) NOT NULL PRIMARY KEY,
                     [Name] NVARCHAR (300) NOT NULL,
                     [IP]   NVARCHAR (15)  NOT NULL,
                     [Port] NVARCHAR (5)   NOT NULL,
-                    [MAC]  NVARCHAR (50)  NOT NULL
+                    [MAC]  NVARCHAR (50)  NOT NULL PRIMARY KEY
                     )
                     ", _connection);
                 _cmd.ExecuteNonQuery();
@@ -69,7 +73,7 @@ namespace PlayersController
             _connection = new SqlCeConnection(_connection_string);
             _connection.Open();
 
-            _adapter = new SqlCeDataAdapter(@"select Name, IP, MAC from Players", _connection);
+            _adapter = new SqlCeDataAdapter(@"select Name, IP, MAC from Players where Port='8080'", _connection);
             _dataTable = new DataTable();
             _adapter.Fill(_dataTable);
             dataGridView1.DataSource = _dataTable;
@@ -94,19 +98,26 @@ namespace PlayersController
 
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
-                        _dataTable.Clear();
+                        try
+                        {
+                            _cmd = new SqlCeCommand("insert into Players(Name, IP, Port, Mac) values (@Name, @IP, @Port, @MAC)", _connection);
+                            _cmd.Parameters.AddWithValue("@Name", name);
+                            _cmd.Parameters.AddWithValue("@IP", ip);
+                            _cmd.Parameters.AddWithValue("@Port", port);
+                            _cmd.Parameters.AddWithValue("@MAC", MAC);
 
-                        _cmd = new SqlCeCommand("insert into Players(Name, IP, Port, Mac) values (@Name, @IP, @Port, @MAC)", _connection);
-                        _cmd.Parameters.AddWithValue("@Name", name);
-                        _cmd.Parameters.AddWithValue("@IP", ip);
-                        _cmd.Parameters.AddWithValue("@Port", port);
-                        _cmd.Parameters.AddWithValue("@MAC", MAC);
+                            _cmd.ExecuteNonQuery();
 
-                        _cmd.ExecuteNonQuery();
+                            _dataTable.Clear();
 
-                        _adapter.Fill(_dataTable);
+                            _adapter.Fill(_dataTable);
 
-                        dataGridView1.DataSource = _dataTable;
+                            dataGridView1.DataSource = _dataTable;
+                        }
+                        catch
+                        {
+                            MessageBox.Show("Плеер с таким MAC уже добавлен");
+                        }
                     }
                     else
                     {
@@ -135,21 +146,26 @@ namespace PlayersController
             {
                 DataGridViewTextBoxCell cell = (DataGridViewTextBoxCell)dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex];
 
-                Player player = new Player();
-
-
                 player.Name = ((DataGridViewTextBoxCell)dataGridView1.Rows[e.RowIndex].Cells[0]).Value.ToString();
                 player.IP = ((DataGridViewTextBoxCell)dataGridView1.Rows[e.RowIndex].Cells[1]).Value.ToString();
                 player.Port = "8080";
                 player.MAC = ((DataGridViewTextBoxCell)dataGridView1.Rows[e.RowIndex].Cells[2]).Value.ToString();
 
-                PlayerControl pc = new PlayerControl(player);
-                pc.ShowDialog();
+                if (_checker.check_Name(player.Name))
+                {
+                    PlayerControl pc = new PlayerControl(player);
+                    pc.ShowDialog();
+                }
             }
             catch
             {
-                MessageBox.Show("Пустая клетка");
+
             }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            timerControl.ShowDialog();
         }
     }
 }
